@@ -1,0 +1,26 @@
+.home-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 35px 50px;
+}
+
+.home-all-button-cards {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.home-all-button-cards > button {
+  width: 150px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+  border: none;
+  background-color: #eb9292;
+  cursor: pointer;
+}
