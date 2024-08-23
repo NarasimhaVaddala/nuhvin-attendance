@@ -31,6 +31,7 @@ const UserLocationMap = ({ location, error, isLocationLoaded }) => {
           center={location}
           zoom={13}
           style={{ height: "400px", width: "100%" }}
+          className="display-map"
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

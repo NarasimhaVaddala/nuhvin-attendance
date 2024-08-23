@@ -1,51 +1,48 @@
 import React, { useEffect, useState } from "react";
-import "./Login.css";
+import "./Signup.css";
 import { IoEyeOffOutline } from "react-icons/io5";
 import { LuEye } from "react-icons/lu";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-const Login = ({ url, setLoggedIn }) => {
+import { ToastContainer,  toast } from "react-toastify";
+const Signup = ({ url }) => {
+  const [showPassword, setShoPassword] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [emp_id , setemp_id] = useState("")
   const navigate = useNavigate();
-  console.log(url);
+  
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setLoggedIn(true);
+    let token = localStorage.getItem("token");
+    if (token) {
       return navigate("/");
     }
   }, []);
 
-  const [showPassword, setShoPassword] = useState(false);
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
+  const makeSignup = async () => {
+    
 
-  const makeLogin = async () => {
     try {
-      const data = await axios.post(`${url}/auth/login`, {
+      const data = await axios.post(`${url}/auth/reg`, {
+        name: name,
         email: userId,
+        emp_id:emp_id,
         password: password,
       });
-      if (data.data.success) {
-        localStorage.setItem("token", data.data.token);
-        localStorage.setItem('role' , data.data.role)
-        console.log(data.data)
-        if(data.data.role === 'admin') {
-          return navigate("/admin")
-        }
-        return navigate("/");
-      }
+      console.log(data);
 
-      if (!data.data.success) {
-        toast.error(data.data.error);
+      if (data.data.success) {
+        alert("signup success please login");
+        return navigate("/login");
       }
     } catch (error) {
-     
+      
         
-        
-      if (error.response?.status == 401) {
+      if (error.response.status == 400) {
 
-        return toast.error("Invalid Credentials");
+        return toast.error("user already exists please login!");
       }
       toast.error(error.message);
     }
@@ -54,9 +51,19 @@ const Login = ({ url, setLoggedIn }) => {
   return (
     <div className="login-container">
       <div className="login-inner-card">
+
         <ToastContainer autoClose={500} />
-        <h3>Employee Login</h3>
-        <p>Hey, Enter your details to get sign in to your account</p>
+        <h3>Employee Signup</h3>
+        <p>Hey, Enter your details to create your account</p>
+        <input
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+          }}
+          type="text"
+          className="login-input"
+          placeholder="Enter Full Name"
+        />
         <input
           value={userId}
           onChange={(e) => {
@@ -65,6 +72,15 @@ const Login = ({ url, setLoggedIn }) => {
           type="text"
           className="login-input"
           placeholder="Enter Email Id"
+        />
+        <input
+          value={emp_id}
+          onChange={(e) => {
+            setemp_id(e.target.value);
+          }}
+          type="text"
+          className="login-input"
+          placeholder="Enter Employee Id"
         />
         <div className="login-inner-card-div">
           <input
@@ -91,14 +107,14 @@ const Login = ({ url, setLoggedIn }) => {
           )}
         </div>
         {/* <h5>Having trouble in sign In?</h5> */}
-        <button onClick={makeLogin}>Sign In</button>
+        <button onClick={makeSignup}>Sign In</button>
         <span>
-          Don't have an account ?{" "}
-          <span onClick={() => navigate("/signup")}>Register Now</span>
+          Already have an account ?{" "}
+          <span onClick={() => navigate("/login")}>Login</span>
         </span>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Signup;

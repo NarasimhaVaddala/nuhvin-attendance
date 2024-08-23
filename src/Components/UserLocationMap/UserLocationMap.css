@@ -1,0 +1,17 @@
+
+.display-map{
+  height: 400px;
+   width: 100%;
+ 
+}
+
+
+
+@media (width < 768px) {
+    .display-map{
+        height: 200px;
+         width: 100%;
+       
+      }
+}
+
